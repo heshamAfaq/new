@@ -73,10 +73,10 @@ class AllEpicenterServices {
     }
     return 400;
   }
+
   getEpicentersbyId(int id) async {
     http.Response res = await http.get(
-      Uri.parse(
-          '${Constants.baseUrl}/Epicenters/GetEpicenter/$id'),
+      Uri.parse('${Constants.baseUrl}/Epicenters/GetEpicenter/$id'),
       headers: <String, String>{
         "Content-type": "application/json",
         'Accept': 'application/json',

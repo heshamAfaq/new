@@ -187,5 +187,8 @@ const Map<String, String> ar = {
   "r":"%",
   "s":"م/ث",
   "o":"ميكرو جرام / م 3",
-  "d":"°م"
+  "d":"°م",
+  "air pollution":"تلوث الهواء",
+  "Soil contamination":"تلوث التربه",
+  "Water Pollution":"تلوث المياه"
 };

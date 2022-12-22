@@ -51,29 +51,29 @@ class AddReportController extends GetxController {
   final polluationSize = 0.0.obs;
 
   //!===============================
-  final temperature = ''.obs;
-  final Windspeed = ''.obs;
+  final temperature = '0.0'.obs;
+  final Windspeed = '0.0'.obs;
   final Sunrise = ''.obs;
   final WinddirectionId = 0.obs;
-  final relativehumidity = ''.obs;
-  final salinity = ''.obs;
-  final totalDissolvedSolids = ''.obs;
-  final totalSuspendedSolids = ''.obs;
-  final pH = ''.obs;
-  final turbidity = ''.obs;
-  final electricalConnection = ''.obs;
-  final dissolvedOxygen = ''.obs;
-  final totalOrganicCarbon = ''.obs;
-  final volatileOrganicMatter = ''.obs;
-  final ozone = ''.obs;
-  final allKindsOfCarbon = ''.obs;
-  final nitrogenDioxide = ''.obs;
-  final sulfurDioxide = ''.obs;
-  final pM25 = ''.obs;
-  final pM10 = ''.obs;
-  final SecoundCarpone = ''.obs;
-  final FirstCarpone = ''.obs;
-  final WaterTemperature = ''.obs;
+  final relativehumidity = '0.0'.obs;
+  final salinity = '0.0'.obs;
+  final totalDissolvedSolids = '0.0'.obs;
+  final totalSuspendedSolids = '0.0'.obs;
+  final pH = '0.0'.obs;
+  final turbidity = '0.0'.obs;
+  final electricalConnection = '0.0'.obs;
+  final dissolvedOxygen = '0.0'.obs;
+  final totalOrganicCarbon = '0.0'.obs;
+  final volatileOrganicMatter = '0.0'.obs;
+  final ozone = '0.0'.obs;
+  final allKindsOfCarbon = '0.0'.obs;
+  final nitrogenDioxide = '0.0'.obs;
+  final sulfurDioxide = '0.0'.obs;
+  final pM25 = '0.0'.obs;
+  final pM10 = '0.0'.obs;
+  final SecoundCarpone = '0.0'.obs;
+  final FirstCarpone = '0.0'.obs;
+  final WaterTemperature = '0.0'.obs;
   final epicenterLenght = 0.0.obs;
   final epicenterDepth = 0.0.obs;
   final epicenterWidth = 0.0.obs;
@@ -166,8 +166,8 @@ class AddReportController extends GetxController {
   //   }
   //   update();
   // }
-  final hardness = 0.0.obs;
-  final acidity = 0.0.obs;
+  final hardness =  '0.0'.obs;
+  final acidity = '0.0'.obs;
   final addServices = AddReportService();
   final underGroundWater = <CitiesModel>[].obs;
   final groundWaterText = ''.obs;
@@ -684,7 +684,7 @@ class AddReportController extends GetxController {
     String? totalOrganicCarbon,
     String? volatileOrganicMatter,
     String? ozone,
-    String? allKindsOfCarbon,
+    // String? allKindsOfCarbon,
     String? nitrogenDioxide,
     String? sulfurDioxide,
     String? hardness,
@@ -806,10 +806,12 @@ class AddReportController extends GetxController {
     } else if (ozone!.isEmpty) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Ozone must be included".tr)));
-    } else if (allKindsOfCarbon!.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("All types of carbon must be entered".tr)));
-    } else if (nitrogenDioxide!.isEmpty) {
+    }
+    // else if (allKindsOfCarbon!.isEmpty) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(content: Text("All types of carbon must be entered".tr)));
+    // }
+    else if (nitrogenDioxide!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Nitrogen dioxide must be included".tr)));
     } else if (sulfurDioxide!.isEmpty) {
@@ -887,7 +889,7 @@ class AddReportController extends GetxController {
             totalOrganicCarbon: totalOrganicCarbon,
             volatileOrganicMatter: volatileOrganicMatter,
             ozone: ozone,
-            allKindsOfCarbon: allKindsOfCarbon,
+            // allKindsOfCarbon: allKindsOfCarbon,
             nitrogenDioxide: nitrogenDioxide,
             sulfurDioxide: sulfurDioxide,
             pM25: pm25,
@@ -1008,10 +1010,12 @@ class AddReportController extends GetxController {
       } else if (ozone.value == "") {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Ozone must be included".tr)));
-      } else if (allKindsOfCarbon.value == "") {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("All types of carbon must be entered".tr)));
-      } else if (nitrogenDioxide.value == "") {
+      }
+      // else if (allKindsOfCarbon.value == "") {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(content: Text("All types of carbon must be entered".tr)));
+      // }
+      else if (nitrogenDioxide.value == "") {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Nitrogen dioxide must be included".tr)));
       } else if (sulfurDioxide.value == "") {
@@ -1032,7 +1036,7 @@ class AddReportController extends GetxController {
       } else if (WaterTemperature.value == "") {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("WaterTemperature Required".tr)));
-      } else if (hardness.value.isEqual(0.0)) {
+      } else if (hardness.value.isEmpty) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("hardness".tr)));
       }
@@ -1078,7 +1082,7 @@ class AddReportController extends GetxController {
           totalOrganicCarbon: totalOrganicCarbon.value,
           volatileOrganicMatter: volatileOrganicMatter.value,
           ozone: ozone.value,
-          allKindsOfCarbon: allKindsOfCarbon.value,
+          // allKindsOfCarbon: allKindsOfCarbon.value,
           nitrogenDioxide: nitrogenDioxide.value,
           sulfurDioxide: sulfurDioxide.value,
           pM25: pM25.value,

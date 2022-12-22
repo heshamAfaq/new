@@ -80,7 +80,7 @@ class _UpdateReportScreenState extends State<UpdateReportScreen> {
         ? reportCtrl.sunRise.value
         : widget.report!.report!.sunRise!;
     reportCtrl.underGround.value = widget.report!.report == null
-        ? reportCtrl.sunRise.value
+        ? reportCtrl.underGround.value
         : widget.report!.report!.hasGroundWater!;
     reportCtrl.plants.value = widget.report!.report == null
         ? reportCtrl.plants.value
@@ -201,9 +201,9 @@ class _UpdateReportScreenState extends State<UpdateReportScreen> {
     controllerozone.text = widget.report!.report == null
         ? "0.0"
         : widget.report!.report!.ozone.toString();
-    controllerallKindsOfCarbon.text = widget.report!.report == null
-        ? "0.0"
-        : widget.report!.report!.allKindsOfCarbon.toString();
+    // controllerallKindsOfCarbon.text = widget.report!.report == null
+    //     ? "0.0"
+    //     : widget.report!.report!.allKindsOfCarbon.toString();
     controllernitrogenDioxide.text = widget.report!.report == null
         ? "0.0"
         : widget.report!.report!.nitrogenDioxide.toString();
@@ -281,15 +281,15 @@ class _UpdateReportScreenState extends State<UpdateReportScreen> {
     }
 
     if (widget.report!.report == null) {
+      print("plantsssssssss");
       reportCtrl.listPlantPlaces.value = [];
       print(reportCtrl.listPlantPlaces.length);
     } else {
       reportCtrl.listPlantPlaces.clear();
-      print("plants");
       for (int i = 0; i < widget.report!.report!.reportPlants!.length; i++) {
         reportCtrl.listPlantPlaces
             .add(widget.report!.report!.reportPlants![i].id!);
-        print("plants");
+        print("plantsssssssss");
         print(reportCtrl.listPlantPlaces.length);
       }
     }
@@ -434,6 +434,13 @@ class _UpdateReportScreenState extends State<UpdateReportScreen> {
         print(widget.report!.report!.reportSurroundedMediums!);
         reportCtrl.mediumPollution
             .add(widget.report!.report!.reportSurroundedMediums![i].name!);
+        if (reportCtrl.mediumPollution[i] == "مياه") {
+          reportCtrl.water.value = true;
+        } else if (reportCtrl.mediumPollution[i] == "تربه") {
+          reportCtrl.earth.value = true;
+        } else if (reportCtrl.mediumPollution[i] == "هواء") {
+          reportCtrl.air.value = true;
+        }
         print(reportCtrl.mediumPollution.length);
       }
     }
@@ -1761,6 +1768,35 @@ class _UpdateReportScreenState extends State<UpdateReportScreen> {
                                                               .surroundedMediums[
                                                                   index]
                                                               .id);
+                                                  if (reportCtrl
+                                                          .surroundedMediums[
+                                                              index]
+                                                          .name ==
+                                                      "مياه") {
+                                                    reportCtrl.water
+                                                        .value = reportCtrl
+                                                            .surroundedMediumsList[
+                                                        index];
+                                                  } else if (reportCtrl
+                                                          .surroundedMediums[
+                                                              index]
+                                                          .name ==
+                                                      "تربه") {
+                                                    reportCtrl.earth
+                                                        .value = reportCtrl
+                                                            .surroundedMediumsList[
+                                                        index];
+                                                  } else if (reportCtrl
+                                                          .surroundedMediums[
+                                                              index]
+                                                          .name ==
+                                                      "هواء") {
+                                                    reportCtrl
+                                                        .air.value = reportCtrl
+                                                            .surroundedMediumsList[
+                                                        index];
+                                                  }
+
                                                   print(v);
                                                 })),
                                             Flexible(
@@ -2950,44 +2986,173 @@ class _UpdateReportScreenState extends State<UpdateReportScreen> {
                     onSavedFunction: (val) {
                       reportCtrl.epicenterVolume.value = double.parse(val!);
                     }),
-                ReportTextFieldWidget(
-                    symbol: "d".tr,
-                    controller: controllertempreture,
-                    title: "Temperature".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changetemperature(val);
-                    }),
-                ReportTextFieldWidget(
-                    symbol: "r".tr,
-                    controller: controllerrelativehumidity,
-                    title: "relative humidity".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.relativehumidity.value = val!;
-                    }),
-                ReportTextFieldWidget(
-                    symbol: "r".tr,
-                    controller: controllerWindspeed,
-                    title: "Wind speed".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.Windspeed.value = val!;
-                    }),
-                ReportTextFieldWidget(
-                    controller: controllersalinity,
-                    title: "Salinity".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changesalinity(val);
-                    }),
-                ReportTextFieldWidget(
-                    controller: controllertotalDissolvedSolids,
-                    title: "TotalDissolvedSolids".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changetotalDissolvedSolids(val);
-                    }),
+
+                Obx(() => reportCtrl.water.value == true ||
+                        reportCtrl.earth.value == true
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          reportCtrl.water.value == true &&
+                                  reportCtrl.earth.value == true
+                              ? LabelWidget(
+                                  label:
+                                      "${"Water Pollution".tr} و ${"Soil contamination".tr}")
+                              : reportCtrl.water.value == true
+                                  ? LabelWidget(label: "Water Pollution".tr)
+                                  : reportCtrl.earth.value == true
+                                      ? LabelWidget(
+                                          label: "Soil contamination".tr)
+                                      : const SizedBox(),
+                          const ReportDividerWidget(),
+                          ReportTextFieldWidget(
+                              controller: controllersalinity,
+                              title: "Salinity".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.changesalinity(val);
+                              }),
+                          ReportTextFieldWidget(
+                              controller: controllertotalDissolvedSolids,
+                              title: "TotalDissolvedSolids".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.changetotalDissolvedSolids(val);
+                              }),
+                          ReportTextFieldWidget(
+                              controller: controllepH,
+                              title: "PH".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.changepH(val);
+                              }),
+                          ReportTextFieldWidget(
+                              controller: controlleelectricalConnection,
+                              title: "ElectricalConnection".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.changeelectricalConnection(val);
+                              }),
+                          ReportTextFieldWidget(
+                              controller: controllertotalOrganicCarbon,
+                              title: "TotalOrganicCarbon".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.changetotalOrganicCarbon(val);
+                              }),
+                          ReportTextFieldWidget(
+                              controller: controllervolatileOrganicMatter,
+                              title: "VolatileOrganicMatter".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.changevolatileOrganicMatter(val);
+                              }),
+
+                          //water
+                          Obx(() => reportCtrl.water.value == true
+                              ? Column(
+                                  children: [
+                                    ReportTextFieldWidget(
+                                        controller: controlleturbidity,
+                                        title: "Turbidity".tr,
+                                        type: TextInputType.number,
+                                        onSavedFunction: (val) {
+                                          reportCtrl.changeturbidity(val);
+                                        }),
+                                    ReportTextFieldWidget(
+                                        symbol: "d".tr,
+                                        controller: controllertempreture,
+                                        title: "Temperature".tr,
+                                        type: TextInputType.number,
+                                        onSavedFunction: (val) {
+                                          reportCtrl.changetemperature(val);
+                                        }),
+                                    ReportTextFieldWidget(
+                                        controller: controllerHardness,
+                                        title: "Hardness".tr,
+                                        type: TextInputType.number,
+                                        onSavedFunction: (val) {
+                                          reportCtrl.hardness.value =
+                                             val!;
+                                          print(reportCtrl.hardness.value);
+                                        }),
+                                    ReportTextFieldWidget(
+                                        controller: controllerdissolvedOxygen,
+                                        title: "DissolvedOxygen".tr,
+                                        type: TextInputType.number,
+                                        onSavedFunction: (val) {
+                                          reportCtrl.changedissolvedOxygen(val);
+                                        }),
+                                  ],
+                                )
+                              : SizedBox()),
+
+                          //air
+                        ],
+                      )
+                    : SizedBox()),
+                Obx(() => reportCtrl.air.value == true
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          LabelWidget(label: "air pollution".tr),
+                          ReportTextFieldWidget(
+                              symbol: "o".tr,
+                              controller: controllerozone,
+                              title: "Ozone".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.changeozone(val);
+                              }),
+                          ReportTextFieldWidget(
+                              symbol: "o".tr,
+                              controller: controllernitrogenDioxide,
+                              title: "NitrogenDioxide".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.changenitrogenDioxide(val);
+                              }),
+                          ReportTextFieldWidget(
+                              symbol: "o".tr,
+                              controller: controllersulfurDioxide,
+                              title: "SulfurDioxide".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.changesulfurDioxide(val);
+                              }),
+                          ReportTextFieldWidget(
+                              controller: controllerFirstCarpone,
+                              title: "FirstCarpone".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.FirstCarpone.value = val!;
+                                print(reportCtrl.FirstCarpone.value);
+                              }),
+                          ReportTextFieldWidget(
+                              controller: controllerSecoundCarpone,
+                              title: "SecoundCarpone".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.SecoundCarpone.value = val!;
+                              }),
+                          ReportTextFieldWidget(
+                              symbol: "o".tr,
+                              controller: controllerpM25,
+                              title: "PM 25".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.changepM25(val);
+                              }),
+                          ReportTextFieldWidget(
+                              symbol: "o".tr,
+                              controller: controllerpM10,
+                              title: "PM 10".tr,
+                              type: TextInputType.number,
+                              onSavedFunction: (val) {
+                                reportCtrl.changepM10(val);
+                              }),
+                        ],
+                      )
+                    : SizedBox()),
                 ReportTextFieldWidget(
                     controller: controlletotalSuspendedSolids,
                     title: "TotalSuspendedSolids".tr,
@@ -2995,103 +3160,15 @@ class _UpdateReportScreenState extends State<UpdateReportScreen> {
                     onSavedFunction: (val) {
                       reportCtrl.changetotalSuspendedSolids(val);
                     }),
-                ReportTextFieldWidget(
-                    controller: controllepH,
-                    title: "PH".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changepH(val);
-                    }),
-                ReportTextFieldWidget(
-                    controller: controlleturbidity,
-                    title: "Turbidity".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changeturbidity(val);
-                    }),
-                ReportTextFieldWidget(
-                    controller: controlleelectricalConnection,
-                    title: "ElectricalConnection".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changeelectricalConnection(val);
-                    }),
-                ReportTextFieldWidget(
-                    controller: controllerdissolvedOxygen,
-                    title: "DissolvedOxygen".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changedissolvedOxygen(val);
-                    }),
-                ReportTextFieldWidget(
-                    controller: controllertotalOrganicCarbon,
-                    title: "TotalOrganicCarbon".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changetotalOrganicCarbon(val);
-                    }),
-                ReportTextFieldWidget(
-                    controller: controllervolatileOrganicMatter,
-                    title: "VolatileOrganicMatter".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changevolatileOrganicMatter(val);
-                    }),
-                ReportTextFieldWidget(
-                    symbol: "o".tr,
-                    controller: controllerozone,
-                    title: "Ozone".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changeozone(val);
-                    }),
-                ReportTextFieldWidget(
-                    controller: controllerallKindsOfCarbon,
-                    title: "AllKindsOfCarbon".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changeallKindsOfCarbon(val);
-                    }),
-                ReportTextFieldWidget(
-                    symbol: "o".tr,
-                    controller: controllernitrogenDioxide,
-                    title: "NitrogenDioxide".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changenitrogenDioxide(val);
-                    }),
-                ReportTextFieldWidget(
-                    symbol: "o".tr,
-                    controller: controllersulfurDioxide,
-                    title: "SulfurDioxide".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changesulfurDioxide(val);
-                    }),
-                ReportTextFieldWidget(
-                    symbol: "o".tr,
-                    controller: controllerpM25,
-                    title: "PM 25".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changepM25(val);
-                    }),
-                ReportTextFieldWidget(
-                    symbol: "o".tr,
-                    controller: controllerpM10,
-                    title: "PM 10".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.changepM10(val);
-                    }),
-                ReportTextFieldWidget(
-                    controller: controllerHardness,
-                    title: "Hardness".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.hardness.value = double.parse(val!);
-                      print(reportCtrl.hardness.value);
-                    }),
+
+                // ReportTextFieldWidget(
+                //     controller: controllerHardness,
+                //     title: "Hardness".tr,
+                //     type: TextInputType.number,
+                //     onSavedFunction: (val) {
+                //       reportCtrl.hardness.value = double.parse(val!);
+                //       print(reportCtrl.hardness.value);
+                //     }),
                 // ReportTextFieldWidget(
                 //     controller: controllerAcidity,
                 //     title: "Acidity".tr,
@@ -3100,21 +3177,14 @@ class _UpdateReportScreenState extends State<UpdateReportScreen> {
                 //       reportCtrl.acidity.value = double.parse(val!);
                 //       print(reportCtrl.acidity.value);
                 //     }),
-                ReportTextFieldWidget(
-                    controller: controllerFirstCarpone,
-                    title: "FirstCarpone".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.FirstCarpone.value = val!;
-                      print(reportCtrl.FirstCarpone.value);
-                    }),
-                ReportTextFieldWidget(
-                    controller: controllerSecoundCarpone,
-                    title: "SecoundCarpone".tr,
-                    type: TextInputType.number,
-                    onSavedFunction: (val) {
-                      reportCtrl.SecoundCarpone.value = val!;
-                    }),
+                // ReportTextFieldWidget(
+                //     controller: controllerallKindsOfCarbon,
+                //     title: "AllKindsOfCarbon".tr,
+                //     type: TextInputType.number,
+                //     onSavedFunction: (val) {
+                //       reportCtrl.changeallKindsOfCarbon(val);
+                //     }),
+
                 ReportTextFieldWidget(
                     symbol: "d".tr,
                     controller: controllerWaterTemperature,
@@ -3122,6 +3192,23 @@ class _UpdateReportScreenState extends State<UpdateReportScreen> {
                     type: TextInputType.number,
                     onSavedFunction: (val) {
                       reportCtrl.WaterTemperature.value = val!;
+                    }),
+
+                ReportTextFieldWidget(
+                    symbol: "s".tr,
+                    controller: controllerWindspeed,
+                    title: "Wind speed".tr,
+                    type: TextInputType.number,
+                    onSavedFunction: (val) {
+                      reportCtrl.Windspeed.value = val!;
+                    }),
+                ReportTextFieldWidget(
+                    symbol: "r".tr,
+                    controller: controllerrelativehumidity,
+                    title: "relative humidity".tr,
+                    type: TextInputType.number,
+                    onSavedFunction: (val) {
+                      reportCtrl.relativehumidity.value = val!;
                     }),
                 Obx(() => reportCtrl.send.value
                     ? const Center(
@@ -3135,10 +3222,10 @@ class _UpdateReportScreenState extends State<UpdateReportScreen> {
                             onPressed: () {
                               reportCtrl.UpdateReport(
                                   context: context,
-                                 firstCarpone:controllerFirstCarpone.text,
+                                  firstCarpone: controllerFirstCarpone.text,
                                   secoundCarpone: controllerSecoundCarpone.text,
-                                  waterTemperature: controllerWaterTemperature.text,
-
+                                  waterTemperature:
+                                      controllerWaterTemperature.text,
                                   // acidity: controllerAcidity.text,
                                   epicenterId: widget.epicenterId!,
                                   hardness: controllerHardness.text,
@@ -3149,8 +3236,8 @@ class _UpdateReportScreenState extends State<UpdateReportScreen> {
                                   windSpeed: controllerWindspeed.text,
                                   extentOfPolluationDescription:
                                       controllerotherNote.text,
-                                  allKindsOfCarbon:
-                                      controllerallKindsOfCarbon.text,
+                                  // allKindsOfCarbon:
+                                  //     controllerallKindsOfCarbon.text,
                                   dissolvedOxygen:
                                       controllerdissolvedOxygen.text,
                                   electricalConnection:

@@ -190,4 +190,7 @@ const Map<String, String> en = {
   "s": "m/s",
   "o": "m g / m3",
   "d": "°m",
+  "air pollution":"air pollution",
+  "Soil contamination":"Soil contamination",
+  "Water Pollution":"Water Pollution"
 };
